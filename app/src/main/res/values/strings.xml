@@ -1,4 +1,5 @@
 <resources>
 	<string name="app_name">Info Collector</string>
 	<string name="info_about_this_device">Info about this Device</string>
+	<string name="did_not_find_device_info">Did not find any device info</string>
 </resources>
