@@ -1,3 +1,4 @@
 <resources>
 	<string name="app_name">Info Collector</string>
+	<string name="info_about_this_device">Info about this Device</string>
 </resources>
