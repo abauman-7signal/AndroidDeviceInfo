@@ -17,15 +17,28 @@ public class Network {
 		while (networkInterfaces != null && networkInterfaces.hasMoreElements()) {
 			NetworkInterface networkInterface = networkInterfaces.nextElement();
 			String displayName = networkInterface.getDisplayName();
+			byte[] macAddress = networkInterface.getHardwareAddress();
 			Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
 			while (inetAddresses != null && inetAddresses.hasMoreElements()) {
 				InetAddress inetAddress = inetAddresses.nextElement();
 				String canonicalHostName = inetAddress.getCanonicalHostName();
 				String hostAddress = inetAddress.getHostAddress();
-				NetworkInfo networkInfo = new NetworkInfo(displayName, canonicalHostName, hostAddress);
+				NetworkInfo networkInfo = new NetworkInfo(displayName, canonicalHostName, hostAddress, macAddress);
 				networks.add(networkInfo);
 			}
 		}
 		return networks;
+	}
+
+	public static String convertMacAddress(byte[] macAddress) {
+		StringBuilder sb = new StringBuilder();
+		if (macAddress != null) {
+			for (int i = 0; i < macAddress.length; i++) {
+				sb.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? ":" : ""));
+			}
+		} else {
+			sb.append("N/A");
+		}
+		return sb.toString();
 	}
 }

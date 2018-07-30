@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
 import com.sevensignal.infocollector.models.NetworkInfo;
 import com.sevensignal.infocollector.observers.NetworkInfoObserver;
+import com.sevensignal.infocollector.utils.Network;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 				deviceInfo.append("NET " + count + " --> name: " + networkInfo.getNetworkDisplayName() + System.lineSeparator());
 				deviceInfo.append("  host addr: " + networkInfo.getHostAddress() + System.lineSeparator());
 				deviceInfo.append("  host name: " + networkInfo.getHostName() + System.lineSeparator());
+				deviceInfo.append("  MAC: " + Network.convertMacAddress(networkInfo.getMacAddress()) + System.lineSeparator());
 			}
 		} else {
 			deviceInfo.append(getResources().getString(R.string.did_not_find_device_info));
