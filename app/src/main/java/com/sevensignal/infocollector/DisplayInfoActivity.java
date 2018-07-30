@@ -39,11 +39,12 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 	}
 
 	private StringBuilder addDeviceInfo(StringBuilder infoToDisplay, DeviceInfo deviceInfo) {
-		infoToDisplay.append("--------------------------------------" + System.lineSeparator());
-		infoToDisplay.append("Device Information" + System.lineSeparator());
-		infoToDisplay.append("--------------------------------------" + System.lineSeparator());
+		infoToDisplay
+				.append("--------------------------------------").append(System.lineSeparator())
+				.append("Device Information").append(System.lineSeparator())
+				.append("--------------------------------------").append(System.lineSeparator());
 		if (deviceInfo != null) {
-			infoToDisplay.append("Serial Number: " + deviceInfo.getSerialNumber() + System.lineSeparator());
+			infoToDisplay.append("Serial Number: ").append(deviceInfo.getSerialNumber()).append(System.lineSeparator());
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
 		}
@@ -51,17 +52,18 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 	}
 
 	private StringBuilder addNetworkInfo(StringBuilder infoToDisplay, List<NetworkInfo> networkInfoList) {
-		infoToDisplay.append("--------------------------------------" + System.lineSeparator());
-		infoToDisplay.append("Network Information" + System.lineSeparator());
-		infoToDisplay.append("--------------------------------------" + System.lineSeparator());
+		infoToDisplay
+				.append("--------------------------------------").append(System.lineSeparator())
+				.append("Network Information").append(System.lineSeparator())
+				.append("--------------------------------------").append(System.lineSeparator());
 		if (networkInfoList != null && !networkInfoList.isEmpty()) {
 			int count = 0;
 			for (NetworkInfo networkInfo : networkInfoList) {
 				count++;
-				infoToDisplay.append("NET " + count + " --> name: " + networkInfo.getNetworkDisplayName() + System.lineSeparator());
-				infoToDisplay.append("  host addr: " + networkInfo.getHostAddress() + System.lineSeparator());
-				infoToDisplay.append("  host name: " + networkInfo.getHostName() + System.lineSeparator());
-				infoToDisplay.append("  MAC: " + Network.formatMacAddress(networkInfo.getMacAddress()) + System.lineSeparator());
+				infoToDisplay.append("NET ").append(count).append(" --> name: ").append(networkInfo.getNetworkDisplayName()).append(System.lineSeparator());
+				infoToDisplay.append("  host addr: ").append(networkInfo.getHostAddress()).append(System.lineSeparator());
+				infoToDisplay.append("  host name: ").append(networkInfo.getHostName()).append(System.lineSeparator());
+				infoToDisplay.append("  MAC: ").append(Network.formatMacAddress(networkInfo.getMacAddress())).append(System.lineSeparator());
 			}
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_network_info));
