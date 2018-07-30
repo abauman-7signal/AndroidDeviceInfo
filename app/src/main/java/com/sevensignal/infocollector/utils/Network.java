@@ -30,7 +30,7 @@ public class Network {
 		return networks;
 	}
 
-	public static String convertMacAddress(byte[] macAddress) {
+	public static String formatMacAddress(byte[] macAddress) {
 		StringBuilder sb = new StringBuilder();
 		if (macAddress != null) {
 			for (int i = 0; i < macAddress.length; i++) {

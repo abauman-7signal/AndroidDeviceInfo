@@ -30,7 +30,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 				deviceInfo.append("NET " + count + " --> name: " + networkInfo.getNetworkDisplayName() + System.lineSeparator());
 				deviceInfo.append("  host addr: " + networkInfo.getHostAddress() + System.lineSeparator());
 				deviceInfo.append("  host name: " + networkInfo.getHostName() + System.lineSeparator());
-				deviceInfo.append("  MAC: " + Network.convertMacAddress(networkInfo.getMacAddress()) + System.lineSeparator());
+				deviceInfo.append("  MAC: " + Network.formatMacAddress(networkInfo.getMacAddress()) + System.lineSeparator());
 			}
 		} else {
 			deviceInfo.append(getResources().getString(R.string.did_not_find_device_info));
