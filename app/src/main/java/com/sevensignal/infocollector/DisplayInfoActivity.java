@@ -2,6 +2,7 @@ package com.sevensignal.infocollector;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
@@ -17,6 +18,8 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_info);
+		TextView deviceInfoTextView = findViewById(R.id.text_view_device_info);
+		deviceInfoTextView.setMovementMethod(new ScrollingMovementMethod());
 		new CollectNetworkInfo().execute(this);
 	}
 
