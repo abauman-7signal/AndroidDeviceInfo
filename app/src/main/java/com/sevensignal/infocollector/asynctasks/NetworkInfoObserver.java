@@ -1,4 +1,4 @@
-package com.sevensignal.infocollector.observers;
+package com.sevensignal.infocollector.asynctasks;
 
 import com.sevensignal.infocollector.models.NetworkInfo;
 

@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.sevensignal.infocollector.models.NetworkInfo;
-import com.sevensignal.infocollector.observers.NetworkInfoObserver;
 import com.sevensignal.infocollector.utils.LoggingTags;
 import com.sevensignal.infocollector.utils.Network;
 

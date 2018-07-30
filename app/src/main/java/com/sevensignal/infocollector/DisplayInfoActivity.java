@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
 import com.sevensignal.infocollector.models.NetworkInfo;
-import com.sevensignal.infocollector.observers.NetworkInfoObserver;
+import com.sevensignal.infocollector.asynctasks.NetworkInfoObserver;
 import com.sevensignal.infocollector.utils.Network;
 
 import java.util.List;
