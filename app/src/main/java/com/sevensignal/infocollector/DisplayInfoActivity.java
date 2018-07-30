@@ -26,6 +26,14 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 	private void displayInfo(List<NetworkInfo> networkInfoList) {
 		TextView deviceInfoTextView = findViewById(R.id.text_view_device_info);
 		StringBuilder deviceInfo = new StringBuilder();
+		deviceInfo = addNetworkInfo(deviceInfo, networkInfoList);
+		deviceInfoTextView.setText(deviceInfo);
+	}
+
+	private StringBuilder addNetworkInfo(StringBuilder deviceInfo, List<NetworkInfo> networkInfoList) {
+		deviceInfo.append("--------------------------------------" + System.lineSeparator());
+		deviceInfo.append("Network Information" + System.lineSeparator());
+		deviceInfo.append("--------------------------------------" + System.lineSeparator());
 		if (networkInfoList != null && !networkInfoList.isEmpty()) {
 			int count = 0;
 			for (NetworkInfo networkInfo : networkInfoList) {
@@ -38,7 +46,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		} else {
 			deviceInfo.append(getResources().getString(R.string.did_not_find_device_info));
 		}
-		deviceInfoTextView.setText(deviceInfo);
+		return deviceInfo;
 	}
 
 	@Override
