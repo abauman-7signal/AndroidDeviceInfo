@@ -87,6 +87,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 				infoToDisplay.append("NET ").append(count).append(" --> name: ").append(networkInfo.getNetworkDisplayName()).append(System.lineSeparator());
 				infoToDisplay.append("  host addr: ").append(networkInfo.getHostAddress()).append(System.lineSeparator());
 				infoToDisplay.append("  host name: ").append(networkInfo.getHostName()).append(System.lineSeparator());
+				infoToDisplay.append("  canonical host name: ").append(networkInfo.getCanonicalHostName()).append(System.lineSeparator());
 				infoToDisplay.append("  MAC: ").append(Network.formatMacAddress(networkInfo.getMacAddress())).append(System.lineSeparator());
 			}
 		} else {

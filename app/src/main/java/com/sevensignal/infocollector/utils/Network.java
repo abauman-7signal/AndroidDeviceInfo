@@ -22,8 +22,9 @@ public class Network {
 			while (inetAddresses != null && inetAddresses.hasMoreElements()) {
 				InetAddress inetAddress = inetAddresses.nextElement();
 				String canonicalHostName = inetAddress.getCanonicalHostName();
+				String hostName = inetAddress.getHostName();
 				String hostAddress = inetAddress.getHostAddress();
-				NetworkInfo networkInfo = new NetworkInfo(displayName, canonicalHostName, hostAddress, macAddress);
+				NetworkInfo networkInfo = new NetworkInfo(displayName, canonicalHostName, hostName, hostAddress, macAddress);
 				networks.add(networkInfo);
 			}
 		}
