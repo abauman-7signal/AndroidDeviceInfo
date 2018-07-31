@@ -13,14 +13,17 @@ import com.sevensignal.infocollector.asynctasks.PermissionRequester;
 import com.sevensignal.infocollector.models.DeviceInfo;
 import com.sevensignal.infocollector.models.NetworkInfo;
 import com.sevensignal.infocollector.asynctasks.NetworkInfoObserver;
+import com.sevensignal.infocollector.models.WifiInfo;
 import com.sevensignal.infocollector.utils.Device;
 import com.sevensignal.infocollector.utils.Network;
+import com.sevensignal.infocollector.utils.Wifi;
 
 import java.util.List;
 
 public class DisplayInfoActivity extends AppCompatActivity implements NetworkInfoObserver, ActivityCompat.OnRequestPermissionsResultCallback {
 
 	DeviceInfo deviceInfo = new DeviceInfo();
+	WifiInfo wifiInfo;
 	List<NetworkInfo> networkInfoList;
 
 	@Override
@@ -31,6 +34,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		deviceInfoTextView.setMovementMethod(new ScrollingMovementMethod());
 
 		deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
+		wifiInfo = Wifi.collectWifiInfo(this);
 		new CollectNetworkInfo().execute(this);
 	}
 
@@ -58,6 +62,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		TextView deviceInfoTextView = findViewById(R.id.text_view_device_info);
 		StringBuilder formattedDisplayInfo = new StringBuilder();
 		formattedDisplayInfo = addDeviceInfo(formattedDisplayInfo, deviceInfo);
+		formattedDisplayInfo = addWifiInfo(formattedDisplayInfo, wifiInfo);
 		formattedDisplayInfo = addNetworkInfo(formattedDisplayInfo, networkInfoList);
 		deviceInfoTextView.setText(formattedDisplayInfo);
 	}
@@ -71,6 +76,19 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 			infoToDisplay.append("Serial Number: ").append(deviceInfo.getSerialNumber()).append(System.lineSeparator());
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
+		}
+		return infoToDisplay;
+	}
+
+	private StringBuilder addWifiInfo(StringBuilder infoToDisplay, WifiInfo wifiInfo) {
+		infoToDisplay
+				.append("--------------------------------------").append(System.lineSeparator())
+				.append("Wi-Fi Information").append(System.lineSeparator())
+				.append("--------------------------------------").append(System.lineSeparator());
+		if (deviceInfo != null) {
+			infoToDisplay.append(wifiInfo.getInfoForDisplay()).append(System.lineSeparator());
+		} else {
+			infoToDisplay.append(getResources().getString(R.string.did_not_find_wifi_info));
 		}
 		return infoToDisplay;
 	}
