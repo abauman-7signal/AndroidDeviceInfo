@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+final def keyStoreFile = file('../../android.jks')
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -10,10 +12,24 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    if (keyStoreFile.exists() && keyStoreFile.canRead()) {
+        signingConfigs {
+            release {
+                storeFile keyStoreFile
+                storePassword System.getenv('KEYSTORE_PASSWD')
+                keyAlias "7signal"
+                keyPassword System.getenv('KEYALIAS_PASSWD')
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (keyStoreFile.exists() && keyStoreFile.canRead()) {
+                signingConfig signingConfigs.release
+            }
+            zipAlignEnabled true
         }
     }
 }
