@@ -2,6 +2,7 @@ package com.sevensignal.infocollector.utils;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 
 public class Wifi {
 
@@ -13,7 +14,7 @@ public class Wifi {
 						wifiInfo.getBSSID(),
 						wifiInfo.getFrequency(),
 						wifiInfo.getHiddenSSID(),
-						wifiInfo.getIpAddress(),
+						Formatter.formatIpAddress(wifiInfo.getIpAddress()),
 						wifiInfo.getLinkSpeed(),
 						wifiInfo.getMacAddress(),
 						wifiInfo.getNetworkId(),

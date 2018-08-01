@@ -9,7 +9,7 @@ public class WifiInfo {
 	private final String bssid;
 	private final int frequency;
 	private final boolean isHiddenSsid;
-	private final int ipAddress;
+	private final String ipAddress;
 	private final int linkSpeed;
 	private final String macAddress;
 	private final int networkId;
