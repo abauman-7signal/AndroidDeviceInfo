@@ -10,6 +10,7 @@ public class WifiInfo {
 	private final int frequency;
 	private final boolean isHiddenSsid;
 	private final String ipAddress;
+	private final String ipRoute;
 	private final int linkSpeed;
 	private final String macAddress;
 	private final int networkId;
