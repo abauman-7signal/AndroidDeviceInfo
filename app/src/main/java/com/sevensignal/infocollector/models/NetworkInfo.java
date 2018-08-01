@@ -1,38 +1,20 @@
 package com.sevensignal.infocollector.models;
 
+import lombok.Data;
+
+@Data(staticConstructor="build")
 public class NetworkInfo {
 
-	private String networkDisplayName;
-	private String canonicalHostName;
-	private String hostName;
-	private String hostAddress;
-	private byte[] macAddress;
+	private final String networkDisplayName;
+	private final String canonicalHostName;
+	private final String hostName;
+	private final String hostAddress;
+	private final String macAddress;
 
-	public NetworkInfo(String networkDisplayName, String canonicalHostName, String hostName, String hostAddress, byte[] macAddress) {
-		this.networkDisplayName = networkDisplayName;
-		this.canonicalHostName = canonicalHostName;
-		this.hostName = hostName;
-		this.hostAddress = hostAddress;
-		this.macAddress = macAddress;
-	}
-
-	public String getNetworkDisplayName() {
-		return networkDisplayName;
-	}
-
-	public String getCanonicalHostName() {
-		return canonicalHostName;
-	}
-
-	public String getHostName() {
-		return hostName;
-	}
-
-	public String getHostAddress() {
-		return hostAddress;
-	}
-
-	public byte[] getMacAddress() {
-		return macAddress;
+	public String getInfoForDisplay() {
+		return this.toString()
+				.replace("NetworkInfo(", " ")
+				.replace(",", System.lineSeparator())
+				.replace(")", "");
 	}
 }

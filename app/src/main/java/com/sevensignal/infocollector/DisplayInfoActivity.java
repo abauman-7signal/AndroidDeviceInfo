@@ -15,7 +15,6 @@ import com.sevensignal.infocollector.models.NetworkInfo;
 import com.sevensignal.infocollector.asynctasks.NetworkInfoObserver;
 import com.sevensignal.infocollector.models.WifiInfo;
 import com.sevensignal.infocollector.utils.Device;
-import com.sevensignal.infocollector.utils.Network;
 import com.sevensignal.infocollector.utils.Wifi;
 
 import java.util.List;
@@ -103,10 +102,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 			for (NetworkInfo networkInfo : networkInfoList) {
 				count++;
 				infoToDisplay.append("NET ").append(count).append(" --> name: ").append(networkInfo.getNetworkDisplayName()).append(System.lineSeparator());
-				infoToDisplay.append("  host addr: ").append(networkInfo.getHostAddress()).append(System.lineSeparator());
-				infoToDisplay.append("  host name: ").append(networkInfo.getHostName()).append(System.lineSeparator());
-				infoToDisplay.append("  canonical host name: ").append(networkInfo.getCanonicalHostName()).append(System.lineSeparator());
-				infoToDisplay.append("  MAC: ").append(Network.formatMacAddress(networkInfo.getMacAddress())).append(System.lineSeparator());
+				infoToDisplay.append(networkInfo.getInfoForDisplay()).append(System.lineSeparator());
 			}
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_network_info));

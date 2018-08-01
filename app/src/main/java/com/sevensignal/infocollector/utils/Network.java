@@ -21,10 +21,7 @@ public class Network {
 			Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
 			while (inetAddresses != null && inetAddresses.hasMoreElements()) {
 				InetAddress inetAddress = inetAddresses.nextElement();
-				String canonicalHostName = inetAddress.getCanonicalHostName();
-				String hostName = inetAddress.getHostName();
-				String hostAddress = inetAddress.getHostAddress();
-				NetworkInfo networkInfo = new NetworkInfo(displayName, canonicalHostName, hostName, hostAddress, macAddress);
+				NetworkInfo networkInfo = NetworkInfo.build(displayName, inetAddress.getCanonicalHostName(), inetAddress.getHostName(), inetAddress.getHostAddress(), formatMacAddress(macAddress));
 				networks.add(networkInfo);
 			}
 		}
