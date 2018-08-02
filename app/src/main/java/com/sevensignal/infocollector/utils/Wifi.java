@@ -6,6 +6,10 @@ import android.text.format.Formatter;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+
+import static com.sevensignal.infocollector.utils.Network.formatMacAddress;
 
 public class Wifi {
 	private static final String NOT_AVAILABLE = "N/A";
@@ -22,6 +26,7 @@ public class Wifi {
 						collectIpRoute(),
 						wifiInfo.getLinkSpeed(),
 						wifiInfo.getMacAddress(),
+						getMacFromIp(wifiInfo.getIpAddress()),
 						wifiInfo.getNetworkId(),
 						wifiInfo.getRssi(),
 						wifiInfo.getSSID(),
@@ -58,5 +63,20 @@ public class Wifi {
 			return NOT_AVAILABLE;
 		}
 		return results.toString();
+	}
+
+	private static String getMacFromIp(int ipAddress) {
+		String[] ipAddressOctets = Formatter.formatIpAddress(ipAddress).split("\\.");
+		byte[] octets = new byte[ipAddressOctets.length];
+		int i = 0;
+		for (String octet : ipAddressOctets) {
+			octets[i++] = (byte)Integer.parseInt(octet);
+		}
+		try {
+			InetAddress inetAddress = InetAddress.getByAddress(octets);
+			return formatMacAddress(NetworkInterface.getByInetAddress(inetAddress).getHardwareAddress());
+		} catch (Exception ex) {
+			return NOT_AVAILABLE;
+		}
 	}
 }

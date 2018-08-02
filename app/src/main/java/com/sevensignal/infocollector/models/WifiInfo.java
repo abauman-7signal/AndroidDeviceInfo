@@ -13,6 +13,7 @@ public class WifiInfo {
 	private final String ipRoute;
 	private final int linkSpeed;
 	private final String macAddress;
+	private final String macAddressFromIp;
 	private final int networkId;
 	private final int rssi;
 	private final String ssid;
