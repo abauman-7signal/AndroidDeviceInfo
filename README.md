@@ -3,6 +3,13 @@
 Collects information about an Android device, particularly Wi-Fi and network
 related.
 
+##### Tests
+
+The application was tested on these platforms / devices
+
+* Android 5.1.1, Zebra Technologies TC8000
+* Android 8.1.0, Moto x4
+* Android 8.?.?, Pixel (??)
 
 ##### Future Considerations
 
