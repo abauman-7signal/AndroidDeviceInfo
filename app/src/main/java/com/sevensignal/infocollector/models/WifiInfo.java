@@ -8,6 +8,7 @@ import lombok.Data;
 public class WifiInfo {
 	private final String bssid;
 	private final int frequency;
+	private final String channel;
 	private final boolean isHiddenSsid;
 	private final String ipAddress;
 	private final String ipRoute;
