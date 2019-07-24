@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
@@ -41,6 +43,18 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		TextView deviceInfoTextView = findViewById(R.id.text_view_device_info);
 		deviceInfoTextView.setMovementMethod(new ScrollingMovementMethod());
 
+		Button button = findViewById(R.id.button_refresh_info);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				refreshInfo();
+			}
+		});
+
+		refreshInfo();
+	}
+
+	private void refreshInfo() {
 		deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
 		wifiInfo = Wifi.collectWifiInfo(this);
 		new CollectNetworkInfo().execute(this);
@@ -53,12 +67,10 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		switch (requestCode) {
 			case PermissionRequester.PERMISSION_TO_READ_PHONE_STATE:
 				Log.i(LoggingTags.UI, "notified that requested permission to read phone state");
-				if (grantResults.length > 0) {
-					for (int i = 0; i < grantResults.length; i++) {
-						if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-							deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
-							updateDisplayedInfo();
-						}
+				for(int grantResult : grantResults) {
+					if (grantResult == PackageManager.PERMISSION_GRANTED) {
+						deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
+						updateDisplayedInfo();
 					}
 				}
 				break;
@@ -79,11 +91,9 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	}
 
 	private void retryScanningAccessPointsIfPermissionGranted(@NonNull int[] grantResults) {
-		if (grantResults.length > 0) {
-			for (int i = 0; i < grantResults.length; i++) {
-				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-					wifiAccessPointScanner.scanWifiChannels(this, this);
-				}
+		for (int grantResult : grantResults) {
+			if (grantResult == PackageManager.PERMISSION_GRANTED) {
+				wifiAccessPointScanner.scanWifiChannels(this, this);
 			}
 		}
 	}
@@ -91,14 +101,14 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	private void updateDisplayedInfo() {
 		TextView deviceInfoTextView = findViewById(R.id.text_view_device_info);
 		StringBuilder formattedDisplayInfo = new StringBuilder();
-		formattedDisplayInfo = addDeviceInfo(formattedDisplayInfo, deviceInfo);
-		formattedDisplayInfo = addWifiInfo(formattedDisplayInfo, wifiInfo);
-		formattedDisplayInfo = addWifiAccessPointScanInfo(formattedDisplayInfo, scanResultList);
-		formattedDisplayInfo = addNetworkInfo(formattedDisplayInfo, networkInfoList);
+		addDeviceInfo(formattedDisplayInfo, deviceInfo);
+		addWifiInfo(formattedDisplayInfo, wifiInfo);
+		addWifiAccessPointScanInfo(formattedDisplayInfo, scanResultList);
+		addNetworkInfo(formattedDisplayInfo, networkInfoList);
 		deviceInfoTextView.setText(formattedDisplayInfo);
 	}
 
-	private StringBuilder addDeviceInfo(StringBuilder infoToDisplay, DeviceInfo deviceInfo) {
+	private void addDeviceInfo(StringBuilder infoToDisplay, DeviceInfo deviceInfo) {
 		infoToDisplay
 				.append("--------------------------------------").append(System.lineSeparator())
 				.append("Device Information").append(System.lineSeparator())
@@ -108,10 +118,9 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
 		}
-		return infoToDisplay;
 	}
 
-	private StringBuilder addWifiInfo(StringBuilder infoToDisplay, WifiInfo wifiInfo) {
+	private void addWifiInfo(StringBuilder infoToDisplay, WifiInfo wifiInfo) {
 		infoToDisplay
 				.append("--------------------------------------").append(System.lineSeparator())
 				.append("Wi-Fi Information").append(System.lineSeparator())
@@ -121,10 +130,9 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_wifi_info));
 		}
-		return infoToDisplay;
 	}
 
-	private StringBuilder addNetworkInfo(StringBuilder infoToDisplay, List<NetworkInfo> networkInfoList) {
+	private void addNetworkInfo(StringBuilder infoToDisplay, List<NetworkInfo> networkInfoList) {
 		infoToDisplay
 				.append("--------------------------------------").append(System.lineSeparator())
 				.append("Network Information").append(System.lineSeparator())
@@ -139,7 +147,6 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_network_info));
 		}
-		return infoToDisplay;
 	}
 
 	private StringBuilder addWifiAccessPointScanInfo(StringBuilder infoToDisplay, List<ScanResult> scanResultList) {
@@ -163,7 +170,6 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_access_point_info));
 		}
-		return infoToDisplay;
 	}
 
 	@Override
