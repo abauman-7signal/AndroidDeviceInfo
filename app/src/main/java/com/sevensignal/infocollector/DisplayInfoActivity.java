@@ -1,29 +1,38 @@
 package com.sevensignal.infocollector;
 
 import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
 import com.sevensignal.infocollector.asynctasks.PermissionRequester;
+import com.sevensignal.infocollector.asynctasks.WifiAccessPointScanner;
+import com.sevensignal.infocollector.asynctasks.WifiAccessPointScanningObserver;
 import com.sevensignal.infocollector.models.DeviceInfo;
 import com.sevensignal.infocollector.models.NetworkInfo;
 import com.sevensignal.infocollector.asynctasks.NetworkInfoObserver;
 import com.sevensignal.infocollector.models.WifiInfo;
 import com.sevensignal.infocollector.utils.Device;
+import com.sevensignal.infocollector.utils.LoggingTags;
 import com.sevensignal.infocollector.utils.Wifi;
 
 import java.util.List;
 
-public class DisplayInfoActivity extends AppCompatActivity implements NetworkInfoObserver, ActivityCompat.OnRequestPermissionsResultCallback {
+public class DisplayInfoActivity extends AppCompatActivity implements
+		NetworkInfoObserver, ActivityCompat.OnRequestPermissionsResultCallback,
+		WifiAccessPointScanningObserver {
 
 	DeviceInfo deviceInfo = new DeviceInfo();
 	WifiInfo wifiInfo;
 	List<NetworkInfo> networkInfoList;
+	List<ScanResult> scanResultList;
+	WifiAccessPointScanner wifiAccessPointScanner = new WifiAccessPointScanner();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
 		wifiInfo = Wifi.collectWifiInfo(this);
 		new CollectNetworkInfo().execute(this);
+		wifiAccessPointScanner.scanWifiChannels(this, this);
 	}
 
 	@Override
@@ -42,6 +52,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		switch (requestCode) {
 			case PermissionRequester.PERMISSION_TO_READ_PHONE_STATE:
+				Log.i(LoggingTags.UI, "notified that requested permission to read phone state");
 				if (grantResults.length > 0) {
 					for (int i = 0; i < grantResults.length; i++) {
 						if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -52,8 +63,28 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 				}
 				break;
 
+			case PermissionRequester.PERMISSION_TO_READ_LOCATION:
+				Log.i(LoggingTags.UI, "notified that requested permission to change read location");
+				retryScanningAccessPointsIfPermissionGranted(grantResults);
+				break;
+
+			case PermissionRequester.PERMISSION_TO_CHANGE_WIFI_STATE:
+				Log.i(LoggingTags.UI, "notified that requested permission to change wifi state");
+				retryScanningAccessPointsIfPermissionGranted(grantResults);
+				break;
+
 			default:
 				break;
+		}
+	}
+
+	private void retryScanningAccessPointsIfPermissionGranted(@NonNull int[] grantResults) {
+		if (grantResults.length > 0) {
+			for (int i = 0; i < grantResults.length; i++) {
+				if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+					wifiAccessPointScanner.scanWifiChannels(this, this);
+				}
+			}
 		}
 	}
 
@@ -62,6 +93,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		StringBuilder formattedDisplayInfo = new StringBuilder();
 		formattedDisplayInfo = addDeviceInfo(formattedDisplayInfo, deviceInfo);
 		formattedDisplayInfo = addWifiInfo(formattedDisplayInfo, wifiInfo);
+		formattedDisplayInfo = addWifiAccessPointScanInfo(formattedDisplayInfo, scanResultList);
 		formattedDisplayInfo = addNetworkInfo(formattedDisplayInfo, networkInfoList);
 		deviceInfoTextView.setText(formattedDisplayInfo);
 	}
@@ -110,9 +142,39 @@ public class DisplayInfoActivity extends AppCompatActivity implements NetworkInf
 		return infoToDisplay;
 	}
 
+	private StringBuilder addWifiAccessPointScanInfo(StringBuilder infoToDisplay, List<ScanResult> scanResultList) {
+		infoToDisplay
+				.append("--------------------------------------").append(System.lineSeparator())
+				.append("Scan Result Information").append(System.lineSeparator())
+				.append("--------------------------------------").append(System.lineSeparator());
+		if (scanResultList != null && !scanResultList.isEmpty()) {
+			int count = 0;
+			for (ScanResult scanResult : scanResultList) {
+				count++;
+				infoToDisplay.append("AP SCAN ").append(count).append(" --> SSID: ").append(scanResult.SSID).append(System.lineSeparator());
+				infoToDisplay.append(
+						scanResult.toString()
+							.replace("SSID", "    SSID")
+							.replace("B    SSID", "BSSID")
+							.replace(",", System.lineSeparator() + "   ")
+				)
+						.append(System.lineSeparator());
+			}
+		} else {
+			infoToDisplay.append(getResources().getString(R.string.did_not_find_access_point_info));
+		}
+		return infoToDisplay;
+	}
+
 	@Override
 	public void onNetworkInfoUpdate(List<NetworkInfo> networkInfoList) {
 		this.networkInfoList = networkInfoList;
+		updateDisplayedInfo();
+	}
+
+	@Override
+	public void onWifiAccessPointScannerUpdate(List<ScanResult> scanResultList) {
+		this.scanResultList = scanResultList;
 		updateDisplayedInfo();
 	}
 }

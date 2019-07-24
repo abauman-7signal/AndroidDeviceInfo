@@ -4,4 +4,5 @@
 	<string name="did_not_find_device_info">Did not find any device info</string>
 	<string name="did_not_find_wifi_info">Did not find any wifi info</string>
 	<string name="did_not_find_network_info">Did not find any network info... yet</string>
+	<string name="did_not_find_access_point_info">Did not find access point info... yet</string>
 </resources>
