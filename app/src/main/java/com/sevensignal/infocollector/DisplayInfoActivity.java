@@ -10,6 +10,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.sevensignal.infocollector.asynctasks.CollectNetworkInfo;
@@ -149,7 +150,10 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		}
 	}
 
-	private StringBuilder addWifiAccessPointScanInfo(StringBuilder infoToDisplay, List<ScanResult> scanResultList) {
+	private void addWifiAccessPointScanInfo(StringBuilder infoToDisplay, List<ScanResult> scanResultList) {
+		Switch switchScanDataForConnectedSsid = findViewById(R.id.switch_filter_by_connected_ssid);
+		boolean shouldFilterOnConnectedSsid = switchScanDataForConnectedSsid.isChecked();
+
 		infoToDisplay
 				.append("--------------------------------------").append(System.lineSeparator())
 				.append("Scan Result Information").append(System.lineSeparator())
@@ -158,18 +162,28 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 			int count = 0;
 			for (ScanResult scanResult : scanResultList) {
 				count++;
-				infoToDisplay.append("AP SCAN ").append(count).append(" --> SSID: ").append(scanResult.SSID).append(System.lineSeparator());
-				infoToDisplay.append(
-						scanResult.toString()
-							.replace("SSID", "    SSID")
-							.replace("B    SSID", "BSSID")
-							.replace(",", System.lineSeparator() + "   ")
-				)
-						.append(System.lineSeparator());
+				if (shouldFilterOnConnectedSsid) {
+					if (scanResult.SSID.equals(wifiInfo.getSsid().replace("\"", ""))) {
+						addScanResult(infoToDisplay, count, scanResult);
+					}
+				} else {
+					addScanResult(infoToDisplay, count, scanResult);
+				}
 			}
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_access_point_info));
 		}
+	}
+
+	private void addScanResult(StringBuilder infoToDisplay, int count, ScanResult scanResult) {
+		infoToDisplay.append("AP SCAN ").append(count).append(" --> SSID: ").append(scanResult.SSID).append(System.lineSeparator());
+		infoToDisplay.append(
+				scanResult.toString()
+						.replace("SSID", "    SSID")
+						.replace("B    SSID", "BSSID")
+						.replace(",", System.lineSeparator() + "   ")
+		)
+				.append(System.lineSeparator());
 	}
 
 	@Override

@@ -6,4 +6,5 @@
 	<string name="did_not_find_network_info">Did not find any network info&#8230; yet</string>
 	<string name="did_not_find_access_point_info">Did not find access point info&#8230; yet</string>
 	<string name="refreshButton">Refresh Info</string>
+	<string name="filterConnectedSsid">Only show scan data for connected SSID</string>
 </resources>
