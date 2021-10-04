@@ -57,6 +57,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 
 	private void refreshInfo() {
 		deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
+		deviceInfo.setOsName(System.getProperty("os.name"));
 		wifiInfo = Wifi.collectWifiInfo(this);
 		new CollectNetworkInfo().execute(this);
 		wifiAccessPointScanner.scanWifiChannels(this, this);
@@ -116,7 +117,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 				.append("--------------------------------------").append(System.lineSeparator());
 		if (deviceInfo != null) {
 			infoToDisplay.append("Serial Number: ").append(deviceInfo.getSerialNumber()).append(System.lineSeparator());
-			infoToDisplay.append("OS: ").append(System.getProperty("os.name")).append(System.lineSeparator());
+			infoToDisplay.append("OS: ").append(deviceInfo.getOsName()).append(System.lineSeparator());
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
 		}

@@ -6,4 +6,5 @@ import lombok.Data;
 public class DeviceInfo {
 
 	private String serialNumber;
+	private String osName;
 }
