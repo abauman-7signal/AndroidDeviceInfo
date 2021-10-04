@@ -116,6 +116,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 				.append("--------------------------------------").append(System.lineSeparator());
 		if (deviceInfo != null) {
 			infoToDisplay.append("Serial Number: ").append(deviceInfo.getSerialNumber()).append(System.lineSeparator());
+			infoToDisplay.append("OS: ").append(System.getProperty("os.name")).append(System.lineSeparator());
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
 		}
