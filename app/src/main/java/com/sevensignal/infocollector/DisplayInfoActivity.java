@@ -18,11 +18,13 @@ import com.sevensignal.infocollector.asynctasks.PermissionRequester;
 import com.sevensignal.infocollector.asynctasks.WifiAccessPointScanner;
 import com.sevensignal.infocollector.asynctasks.WifiAccessPointScanningObserver;
 import com.sevensignal.infocollector.models.DeviceInfo;
+import com.sevensignal.infocollector.models.InformationElementA;
 import com.sevensignal.infocollector.models.NetworkInfo;
 import com.sevensignal.infocollector.asynctasks.NetworkInfoObserver;
 import com.sevensignal.infocollector.models.WifiInfo;
 import com.sevensignal.infocollector.utils.Device;
 import com.sevensignal.infocollector.utils.LoggingTags;
+import com.sevensignal.infocollector.utils.ScanDataAdapter;
 import com.sevensignal.infocollector.utils.Wifi;
 
 import java.util.List;
@@ -31,11 +33,13 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		NetworkInfoObserver, ActivityCompat.OnRequestPermissionsResultCallback,
 		WifiAccessPointScanningObserver {
 
-	DeviceInfo deviceInfo = new DeviceInfo();
-	WifiInfo wifiInfo;
-	List<NetworkInfo> networkInfoList;
-	List<ScanResult> scanResultList;
-	WifiAccessPointScanner wifiAccessPointScanner = new WifiAccessPointScanner();
+	private DeviceInfo deviceInfo = new DeviceInfo();
+	private WifiInfo wifiInfo;
+	private List<NetworkInfo> networkInfoList;
+	private List<ScanResult> scanResultList;
+	private List<InformationElementA> informationElementAList;
+	private WifiAccessPointScanner wifiAccessPointScanner = new WifiAccessPointScanner();
+	private ScanDataAdapter scanDataAdapter = new ScanDataAdapter();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +201,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	@Override
 	public void onWifiAccessPointScannerUpdate(List<ScanResult> scanResultList) {
 		this.scanResultList = scanResultList;
+		this.informationElementAList = scanDataAdapter.findInformationElements(scanResultList);
 		updateDisplayedInfo();
 	}
 }
