@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.sevensignal.infocollector.utils.LoggingTags;
-import com.sevensignal.infocollector.utils.Wifi;
 
 import java.util.List;
 
