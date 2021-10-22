@@ -3,11 +3,12 @@ apply plugin: 'com.android.application'
 final def keyStoreFile = file('../../android.jks')
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.sevensignal.infocollector"
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion 24
+        targetSdkVersion 30
+        buildToolsVersion "30.0.2"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,6 +32,10 @@ android {
             }
             zipAlignEnabled true
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
