@@ -37,7 +37,6 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	private WifiInfo wifiInfo;
 	private List<NetworkInfo> networkInfoList;
 	private List<ScanResult> scanResultList;
-	private List<InformationElementA> informationElementAList;
 	private WifiAccessPointScanner wifiAccessPointScanner = new WifiAccessPointScanner();
 	private ScanDataAdapter scanDataAdapter = new ScanDataAdapter();
 
@@ -182,6 +181,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	}
 
 	private void addScanResult(StringBuilder infoToDisplay, int count, ScanResult scanResult) {
+		List<InformationElementA> informationElementAList = scanDataAdapter.findInformationElements(scanResult);
 		infoToDisplay.append("AP SCAN ").append(count).append(" --> SSID: ").append(scanResult.SSID).append(System.lineSeparator());
 		infoToDisplay.append(
 				scanResult.toString()
@@ -190,6 +190,13 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 						.replace(",", System.lineSeparator() + "   ")
 		)
 				.append(System.lineSeparator());
+		if (informationElementAList.isEmpty()) {
+			infoToDisplay.append(" No Information Element Data");
+		} else {
+			for (InformationElementA informationElementA : informationElementAList) {
+				infoToDisplay.append("    " + informationElementA.toString() + System.lineSeparator());
+			}
+		}
 	}
 
 	@Override
@@ -201,7 +208,6 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	@Override
 	public void onWifiAccessPointScannerUpdate(List<ScanResult> scanResultList) {
 		this.scanResultList = scanResultList;
-		this.informationElementAList = scanDataAdapter.findInformationElements(scanResultList);
 		updateDisplayedInfo();
 	}
 }
