@@ -1,6 +1,5 @@
 package com.sevensignal.infocollector.models;
 
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
