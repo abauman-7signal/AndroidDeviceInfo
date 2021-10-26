@@ -7,4 +7,5 @@ public class DeviceInfo {
 
 	private String serialNumber;
 	private String osName;
+	private int sdk;
 }

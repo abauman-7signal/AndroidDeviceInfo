@@ -2,6 +2,7 @@ package com.sevensignal.infocollector;
 
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 	private void refreshInfo() {
 		deviceInfo.setSerialNumber(Device.collectSerialNumber(this));
 		deviceInfo.setOsName(System.getProperty("os.name"));
+		deviceInfo.setSdk(Build.VERSION.SDK_INT);
 		wifiInfo = Wifi.collectWifiInfo(this);
 		new CollectNetworkInfo().execute(this);
 		wifiAccessPointScanner.scanWifiChannels(this, this);
@@ -121,6 +123,7 @@ public class DisplayInfoActivity extends AppCompatActivity implements
 		if (deviceInfo != null) {
 			infoToDisplay.append("Serial Number: ").append(deviceInfo.getSerialNumber()).append(System.lineSeparator());
 			infoToDisplay.append("OS: ").append(deviceInfo.getOsName()).append(System.lineSeparator());
+			infoToDisplay.append("SDK: ").append(deviceInfo.getSdk()).append(System.lineSeparator());
 		} else {
 			infoToDisplay.append(getResources().getString(R.string.did_not_find_device_info));
 		}
