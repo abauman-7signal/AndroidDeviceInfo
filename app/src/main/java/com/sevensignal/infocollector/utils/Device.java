@@ -17,7 +17,11 @@ public class Device {
 			return Build.SERIAL;
 		} else {
 			if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-				return Build.getSerial();
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+					return Build.getSerial();
+				} else {
+					return "Unknown: Cannot access serial number for SDK " + Build.VERSION.SDK_INT;
+				}
 			} else {
 				PermissionRequester.requestPermissionToReadPhoneState(activity);
 				return "Unknown: Permission not granted";
